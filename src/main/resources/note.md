@@ -1,3 +1,4 @@
 # NOTE
 
-## 1.未解决问题
+## 1.笔记
+原生端点  https://www.callicoder.com/spring-boot-actuator/
