@@ -1,13 +1,12 @@
 package com.ibeesaas.demo.web;
 
+import com.ibeesaas.demo.pojo.User;
 import io.swagger.annotations.ApiOperation;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.serviceregistry.Registration;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -30,6 +29,15 @@ public class HelloController {
     public Object index() {
         return new HashMap<String, String>() {{
             put(env, desc + "  " + age);
+        }};
+    }
+
+    @ApiOperation(value = "获取User")
+    @RequestMapping("/user")
+    public Object getUser(@RequestParam String name) {
+        return new User() {{
+            setAge(18);
+            setName(name);
         }};
     }
 
