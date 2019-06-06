@@ -1,15 +1,18 @@
 package com.ibeesaas.demo.web;
 
+import com.ibeesaas.demo.pojo.User;
 import io.swagger.annotations.ApiOperation;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.serviceregistry.Registration;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.Random;
 
 @RestController
 public class HelloController {
@@ -20,16 +23,27 @@ public class HelloController {
     @Value("${author.age}")
     private Integer age;
 
-//    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private Registration registration;
 
     @ApiOperation(value = "hello测试")
     @RequestMapping("/hello")
-    public Object index() {
-        return new HashMap<String, String>() {{
-            put(env, desc + "  " + age);
+    public Object index() throws Exception {
+        int sleepTime = new Random().nextInt(3000);
+        logger.info(" sleepTime:" + sleepTime);
+        Thread.sleep(sleepTime);
+        logger.info("/ hello, host:" + registration.getHost() + ", service_id:" + registration.getServiceId());
+        return "Hello World";
+    }
+
+    @ApiOperation(value = "获取User")
+    @RequestMapping("/user")
+    public Object getUser(@RequestParam String name) {
+        return new User() {{
+            setAge(18);
+            setName(name);
         }};
     }
 
